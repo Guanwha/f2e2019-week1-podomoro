@@ -3,3 +3,11 @@
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
 }
+
+/* Avoid it shows the default outline when click it */
+button:hover {
+  outline-width: 0;
+}
+button.active {
+  outline-width: 0;
+}

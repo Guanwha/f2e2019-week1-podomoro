@@ -12,7 +12,6 @@
       </button>
     </div>
 
-    <div class="space"/>
     <component v-bind:is="currentTabCompoent">
     </component>
   </div>
@@ -53,43 +52,51 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import '../styles/_variables.scss';
+
 .main-tabs{
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .tabs {
   height: 33px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-bottom: 10px;
 }
 .tab-button {
   width: 33.333%;
-  background: white;
+  background: $color-bg-light;
   border-width: 0;
   display: flex;
-  color: black;
-}
-.tab-button.active {
-  background: white;
-  border-width: 0 0 3px 0;
-  border-style: solid;
-  border-color: red;
-  color: red;
-}
-.tab-button i {
-  width: 30px;
-  height: 30px;
-  line-height: 30px;
-}
-.tab-button .text {
-  font-size: 20px;
-  font-weight: bold;
-  line-height: 30px;
-  margin-left: 12px;
-}
+  color: $color-font-dark;
 
-.space {
-  height: 10px;
+  &.active {
+    background: $color-bg-light;
+    border-width: 0 0 3px 0;
+    border-style: solid;
+    border-color: $color-main;
+    color: $color-main;
+  }
+
+  .text {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 30px;
+    margin-left: 12px;
+
+    &:hover {
+      font-size: 25px;
+    }
+  }
+
+  i {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+  }
 }
 </style>

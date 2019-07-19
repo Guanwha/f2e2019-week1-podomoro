@@ -18,7 +18,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import "../styles/_variables.scss";
+
 .frame{
   display: flex;
   flex-direction: row;
@@ -28,14 +30,14 @@ export default {
   height: 800px;
   display: flex;
   justify-content: flex-start;
-  background: black;
+  background: $color-bg-dark;
 }
 .right-region{
   width: 56%;
   height: 800px;
   display: flex;
   justify-content: flex-end;
-  background: white;
-  padding: 114px 50px 66.5px 50px
+  background: $color-bg-light;
+  padding: 114px 50px 66.5px 50px;
 }
 </style>
