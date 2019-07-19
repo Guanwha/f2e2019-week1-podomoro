@@ -25,7 +25,7 @@ export default {
     return {
       newTodo: '',            // new todo title
       list: [                 // key: id, checked, title, tomatos
-        {id: 0, checked: true, title: '1st thing', tomatos: 0},
+        {id: 0, checked: true, title: '1st thing', tomatos: 4},
         {id: 1, checked: false, title: '2nd thing', tomatos: 0}
       ],
       todoListTitle: 'TO DO', // todo list title
