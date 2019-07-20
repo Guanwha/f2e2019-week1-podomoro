@@ -3,17 +3,18 @@
     <!-- add to do item -->
     <div class="region-create">
       <input v-model="newTodo" placeholder="Add New Mission...">
-      <button>Create</button>
+      <button v-on:click.prevent="addTodo(newTodo)">Create</button>
     </div>
     <!-- lists -->
     <div class="region-lists">
-      <ListToggle v-bind:_title="todoListTitle" v-bind:_list="getTodoList()" v-bind:_editable="true"/>
-      <ListToggle v-bind:_title="doneListTitle" v-bind:_list="getDoneList()" v-bind:_editable="false"/>
+      <ListToggle v-bind:_title="todoListTitle" v-bind:_list="getTodos" v-bind:_editable="true"/>
+      <ListToggle v-bind:_title="doneListTitle" v-bind:_list="getDones" v-bind:_editable="false"/>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import ListToggle from '../components/ListToggle'
 
 export default {
@@ -24,27 +25,15 @@ export default {
   data: function () {
     return {
       newTodo: '',            // new todo title
-      list: [                 // key: id, checked, title, tomatos
-        {id: 0, checked: true, title: '1st thing', tomatos: 4},
-        {id: 1, checked: false, title: '2nd thing', tomatos: 0}
-      ],
       todoListTitle: 'TO DO', // todo list title
       doneListTitle: 'DONE'   // done list title
     }
   },
   methods: {
-    getTodoList: function () {
-      let output = this.list.filter((item) => {
-        return !item.checked
-      })
-      return output
-    },
-    getDoneList: function () {
-      let output = this.list.filter((item) => {
-        return item.checked
-      })
-      return output
-    }
+    ...mapActions(['addTodo'])
+  },
+  computed: {
+    ...mapGetters([ 'getTodos', 'getDones' ])
   }
 }
 </script>

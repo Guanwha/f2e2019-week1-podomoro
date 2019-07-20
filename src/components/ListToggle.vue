@@ -33,7 +33,12 @@ export default {
   data: function () {
     return {
       list: this._list,     // id: identity, key: checked, title, tomatos
-      showList: false       // flag: control todo list display
+      showList: true       // flag: control todo list display
+    }
+  },
+  watch: {
+    _list (list) {
+      this.list = this._list
     }
   },
   methods: {
