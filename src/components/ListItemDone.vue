@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'ListItemDone',
   props: {
@@ -29,7 +31,9 @@ export default {
   methods: {
     switchChecked: function () {
       this.item.checked = !this.item.checked
-    }
+      this.updateTodo(this.item)
+    },
+    ...mapActions(['updateTodo'])
   }
 }
 </script>

@@ -3,16 +3,18 @@
     <i class="material-icons" v-if="!item.checked" v-on:click.prevent="switchChecked">check_box_outline_blank</i>
     <i class="material-icons" v-if="item.checked" v-on:click.prevent="switchChecked">check_box</i>
     <i class="material-icons" v-on:click.prevent="playItem">play_circle_outline</i>
-    <input v-model="item.title"/>
+    <input v-model="item.title" v-on:keyup.enter="updateTodo(item)"/>
     <div v-for="n in item.tomatos"
          v-bind:key="n">
       <i class="material-icons">radio_button_checked</i>
     </div>
-    <i class="material-icons del" v-on:click.prevent="deleteItem">close</i>
+    <i class="material-icons del" v-on:click.prevent="removeTodo(item.id)">close</i>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'ListItemToDo',
   props: {
@@ -31,15 +33,13 @@ export default {
   methods: {
     switchChecked: function () {
       this.item.checked = !this.item.checked
+      this.updateTodo(this.item)
     },
     playItem: function () {
       console.log('start to play ' + this.item.title)
       // start to play item.id
     },
-    deleteItem: function () {
-      console.log('delete ' + this.item.title)
-      // delete the item.id
-    }
+    ...mapActions(['updateTodo', 'removeTodo'])
   }
 }
 </script>

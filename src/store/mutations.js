@@ -10,6 +10,7 @@ export const state = {
 
 // mutations
 export const mutations = {
+  // payload is a title string
   [types.ADD_TODO] (state, payload) {
     if (payload) {
       let item = {
@@ -20,6 +21,34 @@ export const mutations = {
       }
       console.log('[Vuex-ADD_TODO]: ' + JSON.stringify(item))
       state.list.push(item)
+    }
+  },
+  // payload is a item (include id, checked, title, tomatos)
+  [types.UPDATE_TODO] (state, payload) {
+    if (payload) {
+      for (let i in state.list) {
+        let item = state.list[i]
+        if (item.id === payload.id) {
+          console.log('[Vuex-UPDATE_TODO]: ' + JSON.stringify(item) + '-->' + JSON.stringify(payload))
+          state.list[i].checked = payload.checked
+          state.list[i].title = payload.title
+          state.list[i].tomatos = payload.tomatos
+          break
+        }
+      }
+    }
+  },
+  // payload is a id
+  [types.REMOVE_TODO] (state, payload) {
+    if (payload) {
+      for (let i in state.list) {
+        let item = state.list[i]
+        if (item.id === payload) {
+          console.log('[Vuex-REMOVE_TODO]: ' + JSON.stringify(item))
+          state.list.splice(i, 1)
+          break
+        }
+      }
     }
   }
 }
