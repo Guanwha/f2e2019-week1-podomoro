@@ -3,8 +3,8 @@ import * as types from './mutation_types'
 // state
 export const state = {
   list: [
-    {id: 0, checked: true, title: '1st thing', tomatos: 4},
-    {id: 1, checked: false, title: '2nd thing', tomatos: 0}
+    {id: 1, checked: true, title: '1st thing', tomatos: 4},
+    {id: 2, checked: false, title: '2nd thing', tomatos: 0}
   ],
   curID: -1,        // id of current item in play
   isPlaying: false, // flag: is playing (some UI need to disable)
@@ -59,6 +59,7 @@ export const mutations = {
   },
   // payload is a id
   [types.SELECT_TODO] (state, payload) {
+    if (state.isPlaying) return
     if (payload && payload >= 0) {
       for (let i in state.list) {
         let item = state.list[i]
