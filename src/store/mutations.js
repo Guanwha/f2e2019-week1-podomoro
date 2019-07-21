@@ -10,7 +10,8 @@ export const state = {
   curID: -1,          // id of current item in play
   isPlaying: false,   // flag: is playing (some UI need to disable)
   isWork: true,       // flag: work time / break time
-  tomatoRecords: {}   // record total tomatos per day (key: date, value: tomato number)
+  tomatoRecords: {},  // record total tomatos per day (key: date,  value: tomato number)
+  missionRecords: {}  // record total missions per day (key: date,  value: mission number)
 }
 
 // mutations
@@ -28,14 +29,28 @@ export const mutations = {
     }
   },
   // payload is a item (include id, checked, title, tomatos)
+  [types.TOGGLE_TODO] (state, payload) {
+    if (payload) {
+      for (let i in state.list) {
+        if (state.list[i].id === payload.id) {
+          // toggle the job checked and record the date
+          state.list[i].checked = !state.list[i].checked
+          state.list[i].finished = (state.list[i].checked) ? fnDate.todayDate() : ''
+          break
+        }
+      }
+    }
+  },
+  // payload is a item (include id, checked, title, tomatos)
   [types.UPDATE_TODO] (state, payload) {
     if (payload) {
       for (let i in state.list) {
         let item = state.list[i]
         if (item.id === payload.id) {
-          state.list[i].checked = payload.checked
+          // update the information
           state.list[i].title = payload.title
           if (item.id === state.curID && payload.checked) {
+            // remove the current todo id when it has finished
             state.curID = -1
           }
           break

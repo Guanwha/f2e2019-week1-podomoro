@@ -1,14 +1,13 @@
 <template>
-  <div class="item_frame" v-on:click.prevent="selectTodo(item.id)">
-    <i class="material-icons" v-if="!item.checked && !isPlaying" v-on:click.prevent="switchChecked">check_box_outline_blank</i>
-    <i class="material-icons" v-if="item.checked && !isPlaying" v-on:click.prevent="switchChecked">check_box</i>
+  <div class="item_frame" v-on:click.stop="selectTodo(item.id)">
+    <i class="material-icons" v-if="!isPlaying" v-on:click.stop="toggleTodo(item)">check_box_outline_blank</i>
     <i class="material-icons" v-bind:class="{'target-item': checkTarget}">play_circle_outline</i>
-    <input v-model="item.title" v-on:keyup.enter="updateTodo(item)"/>
+    <input v-model="item.title" v-on:keyup.enter="updateTodo(item)" v-on:click.stop/>
     <div v-for="n in parseInt(item.tomatos)"
          v-bind:key="n">
       <i class="material-icons">radio_button_checked</i>
     </div>
-    <i class="material-icons del" v-on:click.prevent="removeTodo(item.id)">close</i>
+    <i class="material-icons del" v-on:click.stop="removeTodo(item.id)">close</i>
   </div>
 </template>
 
@@ -26,11 +25,7 @@ export default {
     }
   },
   methods: {
-    switchChecked: function () {
-      this.item.checked = !this.item.checked
-      this.updateTodo(this.item)
-    },
-    ...mapActions(['updateTodo', 'removeTodo', 'selectTodo'])
+    ...mapActions(['toggleTodo', 'updateTodo', 'removeTodo', 'selectTodo'])
   },
   computed: {
     ...mapGetters(['getTodoByID', 'isPlaying', 'currentTodo']),
