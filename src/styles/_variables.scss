@@ -1,8 +1,27 @@
 
+$width-view: 1280px;
+$height-view: 800px;
+$width-left: $width-view * 0.44;
+$width-right: $width-view * 0.56;
+
 $color-main: red;
 $color-work: red;
-$color-break: yellow;
+$color-work-sub: rgb(255, 87, 87);
+$color-break: green;
+$color-break-sub: rgb(85, 202, 85);
+$color-line: gray;
+$color-danger: red;
 $color-font-light: white;
 $color-font-dark: black;
 $color-bg-light: white;
 $color-bg-dark: black;
+
+//====== calculation ======
+// play component
+$play-center-left: 50%;
+$play-center-top: 40%;
+$outer-play-width: $width-left * 0.4;                     // outer circle's width
+$outer-play-border-radius: $outer-play-width / 2;
+$inner-play-width: $outer-play-width * 0.92;              // inner circle's width
+$inner-play-border-radius: $inner-play-width / 2;
+$play-icon-width: $width-left * 0.2;
