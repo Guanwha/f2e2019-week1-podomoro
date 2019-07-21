@@ -23,7 +23,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['toggleTodo', 'updateTodo'])
+    ...mapActions(['toggleTodo'])
   },
   computed: {
     ...mapGetters(['getTodoByID']),

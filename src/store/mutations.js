@@ -36,6 +36,11 @@ export const mutations = {
           // toggle the job checked and record the date
           state.list[i].checked = !state.list[i].checked
           state.list[i].finished = (state.list[i].checked) ? fnDate.todayDate() : ''
+
+          if (payload.checked && state.list[i].id === state.curID) {
+            // remove the current todo id when it has finished
+            state.curID = -1
+          }
           break
         }
       }
@@ -49,10 +54,6 @@ export const mutations = {
         if (item.id === payload.id) {
           // update the information
           state.list[i].title = payload.title
-          if (item.id === state.curID && payload.checked) {
-            // remove the current todo id when it has finished
-            state.curID = -1
-          }
           break
         }
       }

@@ -2,7 +2,7 @@
   <div class="item_frame" v-on:click.stop="selectTodo(item.id)">
     <i class="material-icons" v-if="!isPlaying" v-on:click.stop="toggleTodo(item)">check_box_outline_blank</i>
     <i class="material-icons" v-bind:class="{'target-item': checkTarget}">play_circle_outline</i>
-    <input v-model="item.title" v-on:keyup.enter="updateTodo(item)" v-on:click.stop/>
+    <input v-model="item.title" v-on:keyup.enter="updateTodoTitle(item)" v-on:click.stop/>
     <div v-for="n in parseInt(item.tomatos)"
          v-bind:key="n">
       <i class="material-icons">radio_button_checked</i>
@@ -25,7 +25,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['toggleTodo', 'updateTodo', 'removeTodo', 'selectTodo'])
+    ...mapActions(['toggleTodo', 'updateTodoTitle', 'removeTodo', 'selectTodo'])
   },
   computed: {
     ...mapGetters(['getTodoByID', 'isPlaying', 'currentTodo']),
