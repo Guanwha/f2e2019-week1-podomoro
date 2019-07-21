@@ -4,7 +4,7 @@ import * as fnDate from '../common/date'
 // state
 export const state = {
   list: [
-    {id: 1, checked: true, title: '1st thing', tomatos: 4},
+    {id: 1, checked: false, title: '1st thing', tomatos: 4},
     {id: 2, checked: false, title: '2nd thing', tomatos: 0}
   ],
   curID: -1,          // id of current item in play

@@ -1,7 +1,10 @@
 
+export const formatDate = (date) => {
+  return date.getFullYear() + '.' + (date.getMonth() + 1) + '.' + date.getDate()
+}
 export const todayDate = () => {
   let now = new Date()
-  return now.getFullYear() + '.' + (now.getMonth() + 1) + '.' + now.getDate()
+  return formatDate(now)
 }
 export const someDate = (date, shiftDay) => {
   let someDay = new Date(date)
