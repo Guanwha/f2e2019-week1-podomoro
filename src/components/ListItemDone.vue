@@ -1,7 +1,6 @@
 <template>
   <div class="item_frame">
-    <i class="material-icons" v-if="!item.checked" v-on:click.prevent="switchChecked">check_box_outline_blank</i>
-    <i class="material-icons" v-if="item.checked" v-on:click.prevent="switchChecked">check_box</i>
+    <i class="material-icons" v-on:click.stop="toggleTodo(item)">check_box</i>
     <p>{{item.title}}</p>
     <div v-for="n in parseInt(item.tomatos)"
          v-bind:key="n">
@@ -24,11 +23,7 @@ export default {
     }
   },
   methods: {
-    switchChecked: function () {
-      this.item.checked = !this.item.checked
-      this.updateTodo(this.item)
-    },
-    ...mapActions(['updateTodo'])
+    ...mapActions(['toggleTodo'])
   },
   computed: {
     ...mapGetters(['getTodoByID']),

@@ -1,14 +1,17 @@
 import * as types from './mutation_types'
+import * as fnDate from '../common/date'
 
 // state
 export const state = {
   list: [
-    {id: 1, checked: true, title: '1st thing', tomatos: 4},
+    {id: 1, checked: false, title: '1st thing', tomatos: 4},
     {id: 2, checked: false, title: '2nd thing', tomatos: 0}
   ],
-  curID: -1,        // id of current item in play
-  isPlaying: false, // flag: is playing (some UI need to disable)
-  isWork: true      // flag: work time / break time
+  curID: -1,          // id of current item in play
+  isPlaying: false,   // flag: is playing (some UI need to disable)
+  isWork: true,       // flag: work time / break time
+  tomatoRecords: {},  // record total tomatos per day (key: date,  value: tomato number)
+  missionRecords: {}  // record total missions per day (key: date,  value: mission number)
 }
 
 // mutations
@@ -26,17 +29,31 @@ export const mutations = {
     }
   },
   // payload is a item (include id, checked, title, tomatos)
+  [types.TOGGLE_TODO] (state, payload) {
+    if (payload) {
+      for (let i in state.list) {
+        if (state.list[i].id === payload.id) {
+          // toggle the job checked and record the date
+          state.list[i].checked = !state.list[i].checked
+          state.list[i].finished = (state.list[i].checked) ? fnDate.todayDate() : ''
+
+          if (payload.checked && state.list[i].id === state.curID) {
+            // remove the current todo id when it has finished
+            state.curID = -1
+          }
+          break
+        }
+      }
+    }
+  },
+  // payload is a item (include id, checked, title, tomatos)
   [types.UPDATE_TODO] (state, payload) {
     if (payload) {
       for (let i in state.list) {
         let item = state.list[i]
         if (item.id === payload.id) {
-          state.list[i].checked = payload.checked
+          // update the information
           state.list[i].title = payload.title
-          state.list[i].tomatos = payload.tomatos
-          if (item.id === state.curID && payload.checked) {
-            state.curID = -1
-          }
           break
         }
       }
@@ -84,6 +101,7 @@ export const mutations = {
         if (item.id === state.curID) {
           state.list[i].tomatos += payload
           state.isPlaying = false
+          recordTomatos(payload)
         }
       }
     }
@@ -100,5 +118,15 @@ export const mutations = {
   [types.CHANGE_TO_WORK] (state) {
     state.isPlaying = false
     state.isWork = true
+  }
+}
+
+// calculation
+export const recordTomatos = (tomatos) => {
+  let today = fnDate.todayDate()
+  if (state.tomatoRecords[today]) {
+    state.tomatoRecords[today] += tomatos
+  } else {
+    state.tomatoRecords[today] = tomatos
   }
 }

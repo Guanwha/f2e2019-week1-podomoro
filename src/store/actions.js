@@ -3,7 +3,10 @@ import * as types from './mutation_types'
 export const addTodo = ({commit}, payload) => {
   commit(types.ADD_TODO, payload)
 }
-export const updateTodo = ({commit}, payload) => {
+export const toggleTodo = ({commit}, payload) => {
+  commit(types.TOGGLE_TODO, payload)
+}
+export const updateTodoTitle = ({commit}, payload) => {
   commit(types.UPDATE_TODO, payload)
 }
 export const removeTodo = ({commit}, payload) => {
