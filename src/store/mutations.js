@@ -1,4 +1,5 @@
 import * as types from './mutation_types'
+import * as fnDate from '../common/date'
 
 // state
 export const state = {
@@ -6,9 +7,10 @@ export const state = {
     {id: 1, checked: true, title: '1st thing', tomatos: 4},
     {id: 2, checked: false, title: '2nd thing', tomatos: 0}
   ],
-  curID: -1,        // id of current item in play
-  isPlaying: false, // flag: is playing (some UI need to disable)
-  isWork: true      // flag: work time / break time
+  curID: -1,          // id of current item in play
+  isPlaying: false,   // flag: is playing (some UI need to disable)
+  isWork: true,       // flag: work time / break time
+  tomatoRecords: {}   // record total tomatos per day (key: date, value: tomato number)
 }
 
 // mutations
@@ -33,7 +35,6 @@ export const mutations = {
         if (item.id === payload.id) {
           state.list[i].checked = payload.checked
           state.list[i].title = payload.title
-          state.list[i].tomatos = payload.tomatos
           if (item.id === state.curID && payload.checked) {
             state.curID = -1
           }
@@ -84,6 +85,7 @@ export const mutations = {
         if (item.id === state.curID) {
           state.list[i].tomatos += payload
           state.isPlaying = false
+          recordTomatos(payload)
         }
       }
     }
@@ -100,5 +102,15 @@ export const mutations = {
   [types.CHANGE_TO_WORK] (state) {
     state.isPlaying = false
     state.isWork = true
+  }
+}
+
+// calculation
+export const recordTomatos = (tomatos) => {
+  let today = fnDate.todayDate()
+  if (state.tomatoRecords[today]) {
+    state.tomatoRecords[today] += tomatos
+  } else {
+    state.tomatoRecords[today] = tomatos
   }
 }
