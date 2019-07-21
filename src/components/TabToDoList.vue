@@ -50,6 +50,7 @@ export default {
   display: flex;
   flex-direction: row;
   padding: 5px;
+  margin: 10px 0 10px 0;
 
   input {
     width: 100%;

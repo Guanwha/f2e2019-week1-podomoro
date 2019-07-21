@@ -112,10 +112,10 @@ export default {
     display: flex;
     flex-direction: column;
     .title {
-      height: 30px;
+      height: 32px;
       width: 100%;
       font-weight: bold;
-      line-height: 30px;
+      line-height: 32px;
       color: $color-font-light;
       background: $color-bg-dark;
       text-align: start;
