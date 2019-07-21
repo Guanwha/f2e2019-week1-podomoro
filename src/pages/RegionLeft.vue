@@ -1,30 +1,98 @@
 <template>
   <div class="cd-frame">
     <img src='../assets/Group20.svg'>
-    <!-- play animation -->
-    <div class="cd-outer-play"></div>
-    <div class="cd-inner-play"/>
-    <i class="material-icons md-light md-96 cd-play-icon">play_arrow</i>
+    <!-- play button -->
+    <div v-bind:class="['cd-outer-play', isWork ? classOuterPlayWork : classOuterPlayBreak]"/>
+    <div v-bind:class="['cd-inner-play', isWork ? classInnerPlayWork : classInnerPlayBreak]"/>
+    <i class="material-icons md-light md-96 cd-play-icon" v-if="!isPlaying" v-on:click.prevent="play">play_arrow</i>
+    <i class="material-icons md-light md-96 cd-play-icon" v-if="isPlaying" v-on:click.prevent="stop">stop</i>
     <!-- text information -->
     <span class="cd-text">{{cdText}}</span>
     <div class="cd-bar"/>
-    <span class="item-title">{{item.title}}</span>
+    <span class="item-title" v-if="currentTodo">{{currentTodo.title}}</span>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+
+const cWorkTime = 1500    // work time (unit: second)
+const cBreakTime = 300    // break time (unit: second)
 
 export default {
   name: 'RegionLeft',
   data: function () {
     return {
-      cdText: '25:00',                                              // fake
-      item: {id: 0, checked: true, title: '1st thing', tomatos: 4}  // fake
+      cd: cWorkTime,
+      cdText: '25:00',  // default text
+
+      // scss class
+      classOuterPlayWork: 'cd-outer-play-is-work',
+      classOuterPlayBreak: 'cd-outer-play-is-break',
+      classInnerPlayWork: 'cd-inner-play-is-work',
+      classInnerPlayBreak: 'cd-inner-play-is-break'
+    }
+  },
+  watch: {
+    cd (newCD) {
+      let min = Math.floor(newCD / 60)
+      let sec = (newCD % 60)
+      this.cdText = min + ':' + sec
     }
   },
   methods: {
+    ...mapActions(['playTodo', 'stopTodo', 'changeToBreak', 'playBreak', 'changeToWork']),
+    // play work / break
+    play: function () {
+      if (this.isPlaying) return
+      if (this.isWork) {
+        this.playTodo()
+      } else {
+        this.playBreak()
+      }
+      // start to count down
+      this.countdown()
+    },
+    // count down loop
+    countdown: function () {
+      // if (this.isPlaying) {
+      if (this.cd > 0) {
+        setTimeout(() => {
+          if (this.isPlaying) { // double check
+            this.cd--
+            this.countdown()
+          }
+        }, 1000)   // count down per 1 second
+      } else {
+        // count down finished
+        if (this.isWork) {
+          this.stopTodo(1)
+          this.changeToBreak()
+          this.cd = cBreakTime  // reset count-down
+        } else {
+          this.changeToWork()
+          this.cd = cWorkTime   // reset count-down
+        }
+      }
+      // }
+    },
+    // stop work / break
+    stop: function () {
+      // stop manually
+      if (this.isPlaying) {
+        if (this.isWork) {
+          let increaseTomatos = (cWorkTime - this.cd) / cWorkTime
+          this.stopTodo(increaseTomatos)
+          this.cd = cWorkTime  // reset count-down
+        } else {
+          this.changeToWork()
+          this.cd = cWorkTime   // reset count-down
+        }
+      }
+    }
   },
   computed: {
+    ...mapGetters(['currentTodo', 'isPlaying', 'isWork'])
   }
 }
 </script>
@@ -48,8 +116,14 @@ export default {
     transform: translate(-50%, -50%);
     left: $play-center-left;
     top: $play-center-top;
-    border: 3px solid $color-main;
     border-radius: $outer-play-border-radius;
+
+    &-is-work {
+      border: 3px solid $color-work;
+    }
+    &-is-break {
+      border: 3px solid $color-break;
+    }
   }
   .cd-inner-play {
     width: $inner-play-width;
@@ -59,7 +133,13 @@ export default {
     left: $play-center-left;
     top: $play-center-top;
     border-radius: $inner-play-border-radius;
-    background: $color-sub;
+
+    &-is-work {
+      background: $color-work-sub;
+    }
+    &-is-break {
+      background: $color-break-sub;
+    }
   }
   .cd-play-icon {
     position: absolute;
@@ -86,6 +166,8 @@ export default {
     background: $color-bg-light;
   }
   .item-title {
+    width: auto;
+    height: 2rem;
     position: absolute;
     transform: translate(-50%, -50%);
     left: 50%;
