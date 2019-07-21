@@ -25,6 +25,5 @@ export default {
   width: 1280px;
   height: 800px;
   margin: 0 auto;
-  background: red;
 }
 </style>

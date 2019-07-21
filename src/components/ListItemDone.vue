@@ -3,7 +3,7 @@
     <i class="material-icons" v-if="!item.checked" v-on:click.prevent="switchChecked">check_box_outline_blank</i>
     <i class="material-icons" v-if="item.checked" v-on:click.prevent="switchChecked">check_box</i>
     <p>{{item.title}}</p>
-    <div v-for="n in item.tomatos"
+    <div v-for="n in parseInt(item.tomatos)"
          v-bind:key="n">
       <i class="material-icons">radio_button_checked</i>
     </div>
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'ListItemDone',
@@ -20,12 +20,7 @@ export default {
   },
   data: function () {
     return {
-      item: {
-        id: this._item.id,
-        checked: this._item.checked,
-        title: this._item.title,
-        tomatos: this._item.tomatos
-      }
+      id: this._item.id
     }
   },
   methods: {
@@ -34,6 +29,12 @@ export default {
       this.updateTodo(this.item)
     },
     ...mapActions(['updateTodo'])
+  },
+  computed: {
+    ...mapGetters(['getTodoByID']),
+    item () {
+      return this.getTodoByID(this.id)
+    }
   }
 }
 </script>
